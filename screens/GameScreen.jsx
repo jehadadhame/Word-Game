@@ -16,7 +16,7 @@ const GameScreen = ({ route, navigation }) => {
   const [feedback, setFeedback] = useState("");
   const [timer, setTimer] = useState(GAME_TIME);
   const [gameEnd, setGameEnd] = useState(false);
-
+  console.log(words);
   const update_leve = async () => {
     await saveCurrentLevel(level + 1)
   }
@@ -30,6 +30,7 @@ const GameScreen = ({ route, navigation }) => {
       if (gameEnd) {
         await save_score();
         await update_level();
+        navigation.goBack()
       }
     };
     handleGameEnd();
@@ -102,7 +103,6 @@ const GameScreen = ({ route, navigation }) => {
           if (foundWords.length == words.length - 1) {
             setFeedback("You have found all the words");
             setGameEnd(true)
-            navigation.goBack()
           }
         } else {
           // return feedback to the user that the word is not correct
