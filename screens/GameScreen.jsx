@@ -17,7 +17,8 @@ const GameScreen = ({ route, navigation }) => {
   const [timer, setTimer] = useState(GAME_TIME);
   const [gameEnd, setGameEnd] = useState(false);
   console.log(words);
-  const update_leve = async () => {
+
+  const update_level = async () => {
     await saveCurrentLevel(level + 1)
   }
 
