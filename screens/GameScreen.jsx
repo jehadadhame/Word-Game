@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, ScrollView, Button, Pressable } from 'react-native';
 import { place_words_on_grid } from '../utils/migrate_words';
-import { getCurrentLevel, increaseCurrentLevel, saveGameScore } from '../utils/storage';
+import { saveCurrentLevel, saveGameScore } from '../utils/storage';
 // to solve the issue of the grid changing on every render
 import { useMemo } from 'react';
 
 const GameScreen = ({ route, navigation }) => {
   const GAME_TIME = 5 * 60;
-  const { words } = route.params;
+  const { words, level } = route.params;
   const grid = useMemo(() => place_words_on_grid(words), [words]);
   const [curen_word, setWord] = useState("");
   const [selectedCells, setSelectedCells] = useState([]);
@@ -16,24 +16,26 @@ const GameScreen = ({ route, navigation }) => {
   const [feedback, setFeedback] = useState("");
   const [timer, setTimer] = useState(GAME_TIME);
   const [gameEnd, setGameEnd] = useState(false);
-  console.log(selectedCells);
-  console.log(curen_word)
 
   const update_leve = async () => {
-    await increaseCurrentLevel()
+    await saveCurrentLevel(level + 1)
   }
 
   const save_score = async () => {
-    finish_time = GAME_TIME - timer
+    const finish_time = GAME_TIME - timer
     await saveGameScore(finish_time, words)
   }
-  useEffect(
-    async () => {
-      await save_score();
-      await update_leve();
-    },
-    gameEnd
-  )
+  useEffect(() => {
+    const handleGameEnd = async () => {
+      if (gameEnd) {
+        await save_score();
+        await update_level();
+      }
+    };
+    handleGameEnd();
+  }, [gameEnd]);
+
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer(timer => timer - 1);

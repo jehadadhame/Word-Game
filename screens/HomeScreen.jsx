@@ -7,7 +7,7 @@ import words_level from '../final_word.json';
 
 const HomeScreen = ({ navigation }) => {
   const [level, setLevel] = useState(0)
-
+  const [level_word, setLevelWords] = useState(words_level[0])
   useEffect(() => {
     const fetchLevel = async () => {
       try {
@@ -21,12 +21,10 @@ const HomeScreen = ({ navigation }) => {
     };
 
     fetchLevel();
+
+    setLevelWords(words_level[level])
   })
-  const get_level_words = () => {
-    words = decode
-    return
-  }
-  console.log(typeof (navigation));
+
   return (
     <View style={styles.container}>
       <Text >level : {level}</Text>
@@ -35,21 +33,14 @@ const HomeScreen = ({ navigation }) => {
         title="Start Game"
         onPress={() =>
           navigation.navigate(RouteName.GameScreen, {
-            words: get_level_words(),
+            words: level_word,
+            level: level,
           })
         }
       />
       <Button
         title="Leaderboard"
         onPress={() => navigation.navigate(RouteName.LeaderboardScreen)}
-      />
-      <Button
-        title="Settings"
-        onPress={() => navigation.navigate('Settings')}
-      />
-      <Button
-        title="back"
-        onPress={() => navigation.goBack()}
       />
     </View>
   );

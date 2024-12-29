@@ -57,15 +57,30 @@ export const getCurrentLevel = async () => {
 
 export const saveGameScore = async (finish_time, words) => {
     try {
-        gameScores = await AsyncStorage.getItem(Game_Score)
-        gameScores = [...gameScores, {
-            "finish_time": finish_time,
-            "words": words,
-            "date": Date.now() //??
-        }]
-        await AsyncStorage.setItem(Game_Score)
+        let gameScores = await AsyncStorage.getItem(Game_Score);
+        gameScores = gameScores ? JSON.parse(gameScores) : [];
+        const newScore = {
+            finish_time: finish_time,
+            words: words,
+            date: new Date().toISOString(),
+        };
+        gameScores.push(newScore);
+        await AsyncStorage.setItem(Game_Score, JSON.stringify(gameScores));
+
+        return true;
     } catch (e) {
-        console.log(e);
-        return false
+        console.log('Error saving game score:', e);
+        return false;
     }
-}
+};
+
+
+export const getGameScores = async () => {
+    try {
+        const gameScores = await AsyncStorage.getItem(Game_Score);
+        return gameScores ? JSON.parse(gameScores) : [];
+    } catch (e) {
+        console.log('Error retrieving game scores:', e);
+        return [];
+    }
+};
