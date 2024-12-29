@@ -17,7 +17,7 @@ const AppNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName={RouteName.OnBordingScreen} // Set the initial screen
+                initialRouteName={RouteName.HomeScreen} // Set the initial screen
                 screenOptions={{
                     headerShown: false, // Hide the header for custom ones if needed
                 }}
@@ -25,9 +25,9 @@ const AppNavigator = () => {
                 {/* Define your routes/screens here */}
                 <Stack.Screen name={RouteName.HomeScreen} component={HomeScreen} />
                 <Stack.Screen name={RouteName.OnBordingScreen} component={OnBordingScreen} />
-                <Stack.Screen name="Game" component={GameScreen} />
-                <Stack.Screen name="Leaderboard" component={Leaderboard} />
-                <Stack.Screen name="Settings" component={Settings} />
+                <Stack.Screen name={RouteName.GameScreen} component={GameScreen} />
+                <Stack.Screen name={RouteName.LeaderboardScreen} component={Leaderboard} />
+                <Stack.Screen name={RouteName.SettingsScreen} component={Settings} />
             </Stack.Navigator>
         </NavigationContainer>
     );

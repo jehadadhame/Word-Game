@@ -3,6 +3,7 @@ import storage from '../constants/storage';
 
 const CURENT_LEVEL = 'currentLevel';
 const USER_NAME = 'userNamee';
+const Game_Score = 'gameScore';
 
 export const saveUserName = async (name) => {
     try {
@@ -32,7 +33,18 @@ export const saveCurrentLevel = async (level) => {
     }
 }
 
-export const getCurrentLevel = async (level) => {
+export const increaseCurrentLevel = async () => {
+    try {
+        level = await getCurrentLevel()
+        await AsyncStorage.setItem(CURENT_LEVEL, level)
+        return true;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export const getCurrentLevel = async () => {
     try {
         return await AsyncStorage.getItem(CURENT_LEVEL);
     } catch (e) {
@@ -41,3 +53,19 @@ export const getCurrentLevel = async (level) => {
     }
 }
 
+
+
+export const saveGameScore = async (finish_time, words) => {
+    try {
+        gameScores = await AsyncStorage.getItem(Game_Score)
+        gameScores = [...gameScores, {
+            "finish_time": finish_time,
+            "words": words,
+            "date": Date.now() //??
+        }]
+        await AsyncStorage.setItem(Game_Score)
+    } catch (e) {
+        console.log(e);
+        return false
+    }
+}
